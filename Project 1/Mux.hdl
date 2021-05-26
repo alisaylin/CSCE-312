@@ -1,0 +1,18 @@
+// Alisa Lin 228008046
+
+/** 
+ * Multiplexor:
+ * out = a if sel == 0
+ *       b otherwise
+ */
+
+CHIP Mux {
+    IN a, b, sel;
+    OUT out;
+
+    PARTS:
+    Not(in=sel,out=selNot);
+    And(a=a,b=selNot,out=aAndselnot);
+    And(a=b,b=sel,out=bAndsel);
+    Or(a=aAndselnot,b=bAndsel,out=out);
+}

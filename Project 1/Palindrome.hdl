@@ -1,0 +1,92 @@
+// Alisa Lin 228008046
+
+/**
+ * Palindrome Detection: 
+ * out = 1 if a palindrome is detected in the sequence of bits "pqrst" 
+ * for example, if sequence "pqrst" is 10101 then out = 1
+ * for example, if sequence "pqrst" is 10110 then out = 0 
+ */
+
+CHIP Palindrome {
+    
+    IN p, q, r, s, t;
+    OUT out;
+	
+    PARTS:
+    // I definitely did this the long way, I should've used Xnor but this works as well.
+    Not(in=p,out=pNot);
+    Not(in=q,out=qNot);
+    Not(in=r,out=rNot);
+    Not(in=s,out=sNot);
+    Not(in=t,out=tNot);
+    
+    // pqrst (p1)
+    And(a=p,b=q,out=pAndq1);
+    And(a=pAndq1,b=r,out=pAndqAndr1);
+    And(a=pAndqAndr1,b=s,out=pAndqAndrAnds1);
+    And(a=pAndqAndrAnds1,b=t,out=pAndqAndrAndsAndt1);
+
+    // p'q'r's't' (p2)
+    And(a=pNot,b=qNot,out=pNAndqN2);
+    And(a=pNAndqN2,b=rNot,out=pNAndqNAndrN2);
+    And(a=pNAndqNAndrN2,b=sNot,out=pNAndqNAndrNAndsN2);
+    And(a=pNAndqNAndrNAndsN2,b=tNot,out=pNAndqNAndrNAndsNAndtN2);
+
+    // Or pqrst and p'q'r's't'
+    Or(a=pAndqAndrAndsAndt1,b=pNAndqNAndrNAndsNAndtN2,out=p1Orp2);
+
+    // pqr'st (p3)
+    And(a=p,b=q,out=pAndq3);
+    And(a=pAndq3,b=rNot,out=pAndqAndrN3);
+    And(a=pAndqAndrN3,b=s,out=pAndqAndrNAnds3);
+    And(a=pAndqAndrNAnds3,b=t,out=pAndqAndrNAndsAndt3);
+
+    // p'q'rs't' (p4)
+    And(a=pNot,b=qNot,out=pNAndqN4);
+    And(a=pNAndqN4,b=r,out=pNAndqNAndr4);
+    And(a=pNAndqNAndr4,b=sNot,out=pNAndqNAndrAndsN4);
+    And(a=pNAndqNAndrAndsN4,b=tNot,out=pNAndqNAndrAndsNAndtN4);
+
+    // Or pqr'st and p'q'rs't'
+    Or(a=pAndqAndrNAndsAndt3,b=pNAndqNAndrAndsNAndtN4,out=p3Orp4);
+
+    // p'qr'st' (p5)
+    And(a=pNot,b=q,out=pNAndq5);
+    And(a=pNAndq5,b=rNot,out=pNAndqAndrN5);
+    And(a=pNAndqAndrN5,b=s,out=pNAndqAndrNAnds5);
+    And(a=pNAndqAndrNAnds5,b=tNot,out=pNAndqAndrNAndsAndtN5);
+
+    // pq'rs't (p6)
+    And(a=p,b=qNot,out=pAndqN6);
+    And(a=pAndqN6,b=r,out=pAndqNAndr6);
+    And(a=pAndqNAndr6,b=sNot,out=pAndqNAndrAndsN6);
+    And(a=pAndqNAndrAndsN6,b=t,out=pAndqNAndrAndsNAndt6);
+
+    // Or p'qr'st' and pq'rs't
+    Or(a=pNAndqAndrNAndsAndtN5,b=pAndqNAndrAndsNAndt6,out=p5Orp6);
+
+    // p'qrst' (p7)
+    And(a=pNot,b=q,out=pNAndq7);
+    And(a=pNAndq7,b=r,out=pNAndqAndr7);
+    And(a=pNAndqAndr7,b=s,out=pNAndqAndrAnds7);
+    And(a=pNAndqAndrAnds7,b=tNot,out=pNAndqAndrAndsAndtN7);
+
+    // pq'r's't (p8)
+    And(a=p,b=qNot,out=pAndqN8);
+    And(a=pAndqN8,b=rNot,out=pAndqNAndrN8);
+    And(a=pAndqNAndrN8,b=sNot,out=pAndqNAndrNAndsN8);
+    And(a=pAndqNAndrNAndsN8,b=t,out=pAndqNAndrNAndsNAndt8);
+    
+    // Or p'qrst' and pq'r's't
+    Or(a=pNAndqAndrAndsAndtN7,b=pAndqNAndrNAndsNAndt8,out=p7Orp8);
+
+    // or p1,p2 + p3,p4
+    Or(a=p1Orp2,b=p3Orp4,out=p1p2Orp3p4);
+
+    // or p1,p2,p3,p4 + p5,p6
+    Or(a=p1p2Orp3p4,b=p5Orp6,out=p1p2Orp3p4Orp5p6);
+
+    // or p1,p2,p3,p4,p5,p6 + p7,p8
+    Or(a=p1p2Orp3p4Orp5p6,b=p7Orp8,out=out);
+
+}

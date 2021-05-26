@@ -1,0 +1,17 @@
+// Alisa Lin 228008046
+
+/**
+ * And gate: 
+ * out = 1 if (a == 1 and b == 1)
+ *       0 otherwise
+ */
+
+CHIP And {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    Not(in=a,out=aNot);
+    Not(in=b,out=bNot);
+    Nor(a=aNot,b=bNot,out=out);
+}

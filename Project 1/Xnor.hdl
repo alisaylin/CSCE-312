@@ -1,0 +1,19 @@
+// Alisa Lin 228008046
+
+/**
+ * Exclusive-Nor gate:
+ * out = (a == b)
+ */
+
+CHIP Xnor {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    And(a=a,b=b,out=aAndb);
+    Not(in=a,out=aNot);
+    Not(in=b,out=bNot);
+    And(a=aNot,b=bNot,out=anotAndbnot);
+    Or(a=aAndb,b=anotAndbnot,out=out);
+
+}
