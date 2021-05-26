@@ -1,0 +1,12 @@
+// Alisa Lin 228008046
+
+CHIP Negation10 {
+    IN in[10];
+    OUT out[10];
+
+    PARTS:
+    // flip bits
+    Not10(in=in,out=outFlipped);
+    // add 1
+    Inc16(in[0..9]=outFlipped,out[0..9]=out);
+}

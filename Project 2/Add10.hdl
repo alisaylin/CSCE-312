@@ -1,0 +1,11 @@
+// Alisa Lin 228008046
+
+CHIP Add10 {
+    IN a[10], b[10];
+    OUT out[10], carry1, carry2;
+
+    PARTS:
+   // Put you code here:
+   
+
+}

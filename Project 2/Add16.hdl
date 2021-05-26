@@ -1,0 +1,22 @@
+// Alisa Lin 228008046
+
+/**
+ * Adds two 16-bit values
+ * The chip performs out=a+b
+ * Both inputs a and b are UNSIGNED 
+ * The carry output is intentionally ignored
+ */
+
+
+CHIP Add16 {
+    IN a[16], b[16];
+    OUT out[16];
+
+    PARTS:
+    Add6In(a=a[0..5],b=b[0..5],cIn=false,out=out[0..5],carry=carry05);
+    Add6In(a=a[6..11],b=b[6..11],cIn=carry05,out=out[6..11],carry=carry611);
+    Add6In(a[0..3]=a[12..15],b[0..3]=b[12..15],cIn=carry611,out[0..3]=out[12..15]);
+
+    // another method using 2 Add6 and 1 RCA4:
+    // RCA4(a=a[12..15],b=b[12..15],cIn=carry611,sum=out[12..15]);
+}

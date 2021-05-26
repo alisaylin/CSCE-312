@@ -1,0 +1,16 @@
+// Alisa Lin 228008046
+
+CHIP AddSub4 {
+    IN a[4], b[4], sub, cIn;
+    OUT out[4],carry;
+
+    PARTS:
+    // negates b values, sub == 1
+    Negation16(in[0..3]=b,out[0..3]=bNegated);
+
+    // select b based on sub value, if sub == 0, a+b. if sub == 1, a-b
+    Mux4(a=b,b=bNegated,sel=sub,out=bOut);
+    
+    // computations and determine carry value
+    RCA4(a=a,b=bOut,sum=out,cIn=cIn,cout=carry);  
+}

@@ -1,0 +1,97 @@
+// Alisa Lin 228008046
+
+
+/**
+ * Shift x left by y bits, new bits are filled in with 0
+ * The maximum shift is 15 bits (in other words, y is in the binary range 0000 to 1111)
+ * x and y are UNSIGNED
+ * Any overflow is dropped
+ */
+
+CHIP LeftLogicBitshift {
+    IN x[16], y[4];
+    OUT out[16];
+
+    PARTS:
+    // 1 bit shift
+    Mux(a=x[0],b=false,sel=y[0],out=A0); 
+    Mux(a=x[1],b=x[0],sel=y[0],out=A1); 
+    Mux(a=x[2],b=x[1],sel=y[0],out=A2);
+    Mux(a=x[3],b=x[2],sel=y[0],out=A3);
+    Mux(a=x[4],b=x[3],sel=y[0],out=A4); 
+    Mux(a=x[5],b=x[4],sel=y[0],out=A5);
+    Mux(a=x[6],b=x[5],sel=y[0],out=A6); 
+    Mux(a=x[7],b=x[6],sel=y[0],out=A7); 
+    Mux(a=x[8],b=x[7],sel=y[0],out=A8); 
+    Mux(a=x[9],b=x[8],sel=y[0],out=A9); 
+    Mux(a=x[10],b=x[9],sel=y[0],out=A10); 
+    Mux(a=x[11],b=x[10],sel=y[0],out=A11); 
+    Mux(a=x[12],b=x[11],sel=y[0],out=A12); 
+    Mux(a=x[13],b=x[12],sel=y[0],out=A13); 
+    Mux(a=x[14],b=x[13],sel=y[0],out=A14); 
+    Mux(a=x[15],b=x[14],sel=y[0],out=A15); 
+    // 2 bit shift
+    Mux(a=A0, b=false, sel=y[1], out=B0);
+    Mux(a=A1, b=false, sel=y[1], out=B1);
+    Mux(a=A2, b=A0, sel=y[1], out=B2);
+    Mux(a=A3, b=A1, sel=y[1], out=B3);
+    Mux(a=A4, b=A2, sel=y[1], out=B4);
+    Mux(a=A5, b=A3, sel=y[1], out=B5);
+    Mux(a=A6, b=A4, sel=y[1], out=B6);
+    Mux(a=A7, b=A5, sel=y[1], out=B7);
+    Mux(a=A8, b=A6, sel=y[1], out=B8);
+    Mux(a=A9, b=A7, sel=y[1], out=B9);
+    Mux(a=A10, b=A8, sel=y[1], out=B10);
+    Mux(a=A11, b=A9, sel=y[1], out=B11);
+    Mux(a=A12, b=A10, sel=y[1], out=B12);
+    Mux(a=A13, b=A11, sel=y[1], out=B13);
+    Mux(a=A14, b=A12, sel=y[1], out=B14);
+    Mux(a=A15, b=A13, sel=y[1], out=B15);
+    // 4 bit shift
+    Mux(a=B0, b=false, sel=y[2], out=C0);
+    Mux(a=B1, b=false, sel=y[2], out=C1);
+    Mux(a=B2, b=false, sel=y[2], out=C2);
+    Mux(a=B3, b=false, sel=y[2], out=C3);
+    Mux(a=B4, b=B0, sel=y[2], out=C4);
+    Mux(a=B5, b=B1, sel=y[2], out=C5);
+    Mux(a=B6, b=B2, sel=y[2], out=C6);
+    Mux(a=B7, b=B3, sel=y[2], out=C7);
+    Mux(a=B8, b=B4, sel=y[2], out=C8);
+    Mux(a=B9, b=B5, sel=y[2], out=C9);
+    Mux(a=B10, b=B6, sel=y[2], out=C10);
+    Mux(a=B11, b=B7, sel=y[2], out=C11);
+    Mux(a=B12, b=B8, sel=y[2], out=C12);
+    Mux(a=B13, b=B9, sel=y[2], out=C13);
+    Mux(a=B14, b=B10, sel=y[2], out=C14);
+    Mux(a=B15, b=B11, sel=y[2], out=C15);
+    // 8 bit shift
+    Mux(a=C0, b=false, sel=y[3], out=out[0]);
+    Mux(a=C1, b=false, sel=y[3], out=out[1]);
+    Mux(a=C2, b=false, sel=y[3], out=out[2]);
+    Mux(a=C3, b=false, sel=y[3], out=out[3]);
+    Mux(a=C4, b=false, sel=y[3], out=out[4]);
+    Mux(a=C5, b=false, sel=y[3], out=out[5]);
+    Mux(a=C6, b=false, sel=y[3], out=out[6]);
+    Mux(a=C7, b=false, sel=y[3], out=out[7]);
+    Mux(a=C8, b=C0, sel=y[3], out=out[8]);
+    Mux(a=C9, b=C1, sel=y[3], out=out[9]);
+    Mux(a=C10, b=C2, sel=y[3], out=out[10]);
+    Mux(a=C11, b=C3, sel=y[3], out=out[11]);
+    Mux(a=C12, b=C4, sel=y[3], out=out[12]);
+    Mux(a=C13, b=C5, sel=y[3], out=out[13]);
+    Mux(a=C14, b=C6, sel=y[3], out=out[14]);
+    Mux(a=C15, b=C7, sel=y[3], out=out[15]);
+
+    // another efficient way using Mux16s:
+    // 1 bit shift
+    // Mux16(a=x,b[0]=false,b[1..15]=x[0..14],sel=y[0],out=outA,out[0..13]=outA2);
+    // // 2 bit shift
+    // Mux16(a=outA,b[0..1]=false,b[2..15]=outA2,sel=y[1],out=outB,out[0..11]=outB2);
+    // // 4 bit shift
+    // Mux16(a=outB,b[0..3]=false,b[4..15]=outB2,sel=y[2],out=outC,out[0..7]=outC2);
+    // // 8 bit shift
+    // Mux16(a=outC,b[0..7]=false,b[8..15]=outC2,sel=y[3],out=out);
+    
+    
+    
+}

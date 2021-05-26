@@ -1,0 +1,10 @@
+// Alisa Lin 228008046 
+
+CHIP Inc10 {
+    IN in[10];
+    OUT out[10];
+
+    PARTS:
+    Add10(a=in,b[0]=true,b[1..9]=false,out=out);
+
+}

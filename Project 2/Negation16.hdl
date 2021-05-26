@@ -1,0 +1,19 @@
+// Alisa Lin 228008046
+
+/**
+ * Negate a 16-bit number in 2's complement format. 
+ * 2’s complement of the input 
+ * carry out is intentionally ignored
+ * Input in is in 2s complement format
+ */
+
+CHIP Negation16 {
+    IN in[16];
+    OUT out[16];
+
+    PARTS:
+    // flip bits
+	Not16(in=in, out=outFlipped);
+    // add 1
+    Inc16(in=outFlipped, out=out);
+}
